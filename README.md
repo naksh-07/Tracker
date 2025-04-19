@@ -9,7 +9,7 @@
 
 - ⏱️ **Track Every Codespace Session** – Logs session start, duration, and total runtime.
 - 🔁 **Live Runtime Monitoring** – Updates every minute using `ghadi.sh` + `update_minute.py`.
-- 🚨 **Trigger Scripts on Conditions** – Triggers custom scripts (like backups or alerts) when conditions like 6 min, 20 hrs etc. are met.
+- 🚨 **Trigger Scripts on Conditions** – Triggers custom scripts (like backups or alerts) when conditions like 6 min, 20 hrs, etc. are met.
 - 🔍 **Crash Recovery** – Handles unclean shutdowns like a pro.
 - 🔧 **Modular Architecture** – Every component does one job, and does it well.
 - ⚙️ **Fully Configurable** – Want to trigger your own script at 100 mins? Just edit the config.
@@ -18,7 +18,33 @@
 
 ## 🧠 Architecture Overview
 
-codespace-tracker/ ├── ghadi.sh # Runs every minute, triggers update_minute.py ├── update_minute.py # Updates current session + minute_runtime ├── chalu.sh # Initializes new session + recovers last crash ├── session_init.py # Sets start time ├── crash_recovery.py # Recovers session if crash happened ├── runtime.py # Every 20 mins, logs session time ├── totalruntime.py # Every 25 mins, logs total runtime ├── trigger.py # Monitors runtime & triggers scripts via config ├── trigger_config.json # 🔥 Config for all triggers ├── utils.py # Helper functions for reading/writing/logs ├── start_all.sh # Starts all core background processes ├── setup.sh # Master installer script └── .codespace-tracker/ ├── minute_runtime.json ├── current_session.json ├── total_runtime.json ├── session_logs.json ├── first_start.json ├── flags/ # Trigger flags go here └── debug.log
+```
+codespace-tracker/
+├── ghadi.sh               # Runs every minute, triggers update_minute.py
+├── update_minute.py       # Updates current session + minute_runtime
+├── chalu.sh               # Initializes new session + recovers last crash
+├── session_init.py        # Sets start time
+├── crash_recovery.py      # Recovers session if crash happened
+├── runtime.py             # Every 20 mins, logs session time
+├── totalruntime.py        # Every 25 mins, logs total runtime
+├── trigger.py             # Monitors runtime & triggers scripts via config
+├── trigger_config.json    # 🔥 Config for all triggers
+├── utils.py               # Helper functions for reading/writing/logs
+├── start_all.sh           # Starts all core background processes
+├── setup.sh               # Master installer script
+└── .codespace-tracker/
+    ├── minute_runtime.json     # Session runtime (live, per minute)
+    ├── current_session.json    # Current session timer
+    ├── total_runtime.json      # Total Codespace usage
+    ├── session_logs.json       # All past sessions
+    ├── first_start.json        # First launch timestamp
+    ├── flags/                  # Trigger flags go here
+    └── debug.log               # Logs, errors, and recovery messages
+```
+
+
+
+
 
 
 ---
@@ -29,6 +55,7 @@ codespace-tracker/ ├── ghadi.sh # Runs every minute, triggers update_minut
 
 ```bash
 bash setup.sh
+
 This will:
 
 Create the .codespace-tracker directory
@@ -43,6 +70,7 @@ Edit trigger_config.json to add new runtime conditions & scripts:
 json
 Copy
 Edit
+
 {
   "label": "6-minute script",
   "script_url": "https://example.com/my-script.sh",
@@ -53,8 +81,10 @@ Edit
     "minute_runtime_minutes": 6
   }
 }
-Add as many as you want!
-The engine will monitor and trigger them automatically 🚀
+
+
+✅ Add as many as you want!
+⚡ The engine will monitor and trigger them automatically.
 
 💾 Runtime Files
 Runtime JSON files are stored inside .codespace-tracker/:
@@ -85,13 +115,24 @@ This project is made to grow and be flexible 💪
 
 📜 License
 This project uses the MIT License —
+
 ✅ Free to use
+
 ✅ Modify for your use case
+
 ✅ Even use commercially
+
 🧠 Just credit the original author if you redistribute 🙌
 
 MIT License Details →
 
-🧙‍♂️ Author Naveen Amrawanshi
-Made with love by @naksh-07 💻
-“Code toh sab likhte hai... main toh ghadi banata hoon!”
+🧙‍♂️ Author
+Naveen Amrawanshi
+Made with ❤️ by @naksh-07
+
+“Code toh sab likhte hai... main toh meain chat gpt se likhwata hoon!”
+
+
+---
+
+Let me know if you want a badge row, gif demo, or install stats added at the top!
