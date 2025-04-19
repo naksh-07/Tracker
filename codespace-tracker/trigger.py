@@ -19,12 +19,20 @@ os.makedirs(FLAG_DIR, exist_ok=True)
 
 def run_script(url, command, cwd, flag_path, label):
     try:
-        subprocess.run(f"curl -sSLO {url}", shell=True, check=True, cwd=cwd)
+        # Only download if script_url is provided and not empty
+        if url and url.strip():
+            subprocess.run(f"curl -sSLO {url}", shell=True, check=True, cwd=cwd)
+
+        # Now run the command
         subprocess.run(command, shell=True, check=True, cwd=cwd)
+
+        # Create a flag file to prevent repeat triggers
         with open(flag_path, "w") as f:
             f.write(datetime.utcnow().isoformat())
+
         append_log(f"✅ Triggered: {label}")
         print(f"🚀 {label} script executed!")
+
     except Exception as e:
         append_log(f"❌ Failed to run {label}: {e}")
         print(f"❌ Error: {label} script failed - {e}")
@@ -55,7 +63,7 @@ def monitor_runtime():
                     item["conditions"], minutes, total_hours, session_minutes
                 ):
                     run_script(
-                        item["script_url"],
+                        item.get("script_url", ""),  # default to empty string
                         item["script_command"],
                         item["cwd"],
                         flag_path,
