@@ -31,10 +31,10 @@ do
     fi
 done
 
-# Check for Python 3
+# 3. Check for Python 3
 python3 --version >/dev/null 2>&1 || { echo "❌ Python3 not found!"; exit 1; }
 
-# Check for pip3
+# 4. Check for pip3
 if ! command -v pip3 >/dev/null 2>&1; then
     echo "⚠️ pip3 not found. Attempting to install..."
     
@@ -49,22 +49,25 @@ else
     echo "✅ pip3 is already installed."
 fi
 
-# Install or upgrade dependencies
+# 5. Install or upgrade dependencies
 echo "📦 Installing/upgrading dependencies from requirements.txt..."
 pip3 install --upgrade -r requirements.txt
 
 
-# 4. Initialize first_start.json and current_session.json via session_init.py
+# 6. Initialize first_start.json and current_session.json via session_init.py
 echo "⚙️ Initializing session with session_init.py..."
 python3 session_init.py
 
-# 5. Create runtime loop scripts if not exist
-
+# 7. Make runtime loop scripts executable if not exist
 chmod +x runtime_loop.sh totalruntime_loop.sh
 
-# 6. Launch background trackers
+# 8. Dynamically fetch the correct tracker path and start all services
+TRACKER_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo "🚀 Starting all background trackers via start_all.sh..."
-bash start_all.sh
+bash "$TRACKER_PATH/start_all.sh"
+
+bash injection.sh
 
 echo ""
 echo "✅ Codespace Tracker setup complete!"
